@@ -1,7 +1,7 @@
 {
   "name": "discord-bot-medium",
   "version": "0.0.0",
-  "description": "",
+  "description": "An versatile bot that responds to your questions through configurable microservices",
   "type": "module",
   "main": "build/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "discord",
     "bot",
     "medium",
-    "microservice"
+    "microservices-application"
   ],
   "author": "Sayantan Chaudhuri",
   "license": "ISC",
