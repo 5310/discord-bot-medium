@@ -51,7 +51,7 @@
     
   ` *
     For every new message it can read in a channel it's allowed to post in
-    If the content matches any channeling's regex in order of priority 
-      Send's it to is microservice
-      ? Add a temporary reaction to signify it's processing it
-      Delegates the response as a reply
+      If the content matches any channeling's regex in order of priority 
+        Send's it to is microservice
+        ? Add a temporary reaction to signify it's processing it
+        Delegates the response as a reply
