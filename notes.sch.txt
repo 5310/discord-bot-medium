@@ -55,3 +55,6 @@
         Send's it to is microservice
         ? Add a temporary reaction to signify it's processing it
         Delegates the response as a reply
+  ? What about aliases?
+    Local ones, ofc, can't trigger other bots
+  ? Formalize Medium–Specter interface
