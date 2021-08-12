@@ -8,7 +8,7 @@
     "lint": "npx tslint -p .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -Rf ./build/* && tsc",
-    "start": "node -r dotenv/config .",
+    "start": "npm run build && node -r dotenv/config .",
     "postinstall": "npm run build"
   },
   "keywords": [
