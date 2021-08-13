@@ -58,7 +58,7 @@
         {
           "type": "reply",
           "regex": "/^(hullo|hello|hi|hey).*/i",
-          "endpoint": "http://localhost:3000/api/helloworld",
+          "endpoint": "https://example.com/hello",
           "description": "Greets you"
         }
       ],
@@ -88,7 +88,7 @@
         {
           "type": "reaction",
           "trigger": "/(^yo|so+ metal|very metal)/i",
-          "endpoint": "http://localhost:3000/api/🤘",
+          "endpoint": "https://example.com/🤘",
           "description": "Gives you the devil horns"
         }
       ],
