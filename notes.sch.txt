@@ -11,7 +11,7 @@
   
 * Design
 
-  Invocation
+  Commands
 
     ?` @medium help
     
@@ -62,9 +62,8 @@
           ? Add a temporary reaction to signify it's processing it
           Delegates the response as a reply
 
-  Store
-    See `./schema.json`
-
+  Schemata
+    See `./spirits.schema.json`
 
   Interface 
     Medium→spirit
