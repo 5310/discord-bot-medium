@@ -65,155 +65,151 @@
   Store
     ```
       {
-          "$schema": "http://json-schema.org/draft-07/schema",
-          "$id": "http://discord-bot-medium.scio.space/schema.json",
-          "type": "array",
-          "title": "List of Spirits to channel for this Guild",
-          "default": [],
-          "additionalItems": true,
-          "items": {
-              "anyOf": [
-                  {
-                      "$ref": "#/$defs/reply
-                  },
-                  {
-                      "$ref": "#/$defs/react
-                  },
-                  {
-                      "$ref": "#/$defs/alias
-                  },
-              ]
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "array",
+        "title": "Spirits",
+        "description": "List of Spirits to channel for this Guild",
+        "default": [],
+        "additionalItems": true,
+        "items": {
+          "anyOf": [{
+              "$ref": "#/$defs/Reply"
+            },
+            {
+              "$ref": "#/$defs/React"
+            },
+            {
+              "$ref": "#/$defs/Alias"
+            }
+          ]
+        },
+        "$defs": {
+          "Trigger": {
+            "type": "string",
+            "format": "regex",
+            "description": "The regex trigger for this invocation"
           },
-          "$defs": {
+          "Endpoint": {
+            "type": "string",
+            "format": "iri",
+            "description": "The endpoint to invoke"
+          },
+          "Example": {
+            "type": "array",
+            "description": "An example invocations",
+            "items": [{
+                "type": "string",
+                "description": "The example invocation"
+              },
+              {
+                "type": "string",
+                "description": "The resulting response"
+              }
+            ]
+          },
+          "Examples": {
+            "type": "array",
+            "description": "A list of example invocations",
+            "additionalItems": true,
+            "items": {
+              "$ref": "#/$defs/Example"
+            }
+          },
+          "Reply": {
+            "type": "object",
+            "title": "Reply Spirit",
+            "examples": [{
+              "type": "reply",
+              "regex": "/^(hullo|hello|hi|hey).*/i",
+              "endpoint": "http://localhost:3000/api/helloworld",
+              "description": "Greets you"
+            }],
+            "required": [
+              "type",
+              "trigger",
+              "endpoint"
+            ],
+            "properties": {
+              "type": {
+                "constant": "reply"
+              },
               "trigger": {
-                  "type": "string",
-                  "format": "regex",
-                  "description": "The regex trigger for this invocation"
+                "$ref": "#/$defs/Trigger"
               },
               "endpoint": {
-                  "type": "string",
-                  "format": "uri",
-                  "description": "The endpoint to invoke"
+                "$ref": "#/$defs/Endpoint"
               },
-              "example": {
-                  "type": "array",
-                  "title": "A list of example invocations",
-                  "additionalItems": true,
-                  "items": {
-                      "anyOf": [
-                          {
-                              "type": "array",
-                              "items": "items": [
-                                  {
-                                      "type": "string",
-                                      "description": "The example invocation",
-                                  },
-                                  {
-                                      "type": "string",
-                                      "description": "The resulting response",
-                                  }
-                              ]
-                          }
-                      ]
-                  }
+              "description": {
+                "type": "string"
               },
-              "reply": {
-                  "type": "object",
-                  "title": "Reply Spirit",
-                  "examples": [
-                    {
-                      "type": "reply",
-                      "regex": "/^(hullo|hello|hi|hey).*/i",
-                      "endpoint": "http://localhost:3000/api/helloworld",
-                      "description": "Greets you"
-                    },
-                  ],
-                  "required": [
-                      "type",
-                      "trigger",
-                      "endpoint"
-                  ],
-                  "properties": {
-                      "type": {
-                          "constant": "reply"
-                      },
-                      "trigger": {
-                          "$ref": "#/$defs/trigger"
-                      },
-                      "endpoint": {
-                          "$ref": "#/$defs/endpoint"
-                      },
-                      "description": {
-                          "type": "string",
-                          "description": "A description for the Spirit",
-                      },
-                      "examples": { "$ref": "#/$defs/examples }
-                  }
+              "examples": {
+                "$ref": "#/$defs/Examples"
+              }
+            }
+          },
+          "React": {
+            "type": "object",
+            "title": "React Spirit",
+            "examples": [{
+              "type": "reaction",
+              "trigger": "/(^yo|so+ metal|very metal)/i",
+              "endpoint": "http://localhost:3000/api/🤘",
+              "description": "Gives you the devil horns"
+            }],
+            "required": [
+              "type",
+              "regex",
+              "endpoint"
+            ],
+            "properties": {
+              "type": {
+                "constant": "react"
               },
-              "react": {
-                  "type": "object",
-                  "title": "React Spirit",
-                  "examples": [
-                      {
-                          "type": "reaction",
-                          "regex": "/(^yo|so+ metal|very metal)/i",
-                          "endpoint": "http://localhost:3000/api/🤘",
-                          "description": "Gives you the devil horns"
-                      }
-                  ],
-                  "required": [
-                      "type",
-                      "regex",
-                      "endpoint"
-                  ],
-                  "properties": {
-                      "type": {
-                          "constant": "react"
-                      },
-                      "trigger": {
-                          "$ref": "#/$defs/trigger"
-                      },
-                      "endpoint": {
-                          "$ref": "#/$defs/endpoint"
-                      },
-                      "description": {
-                          "type": "string",
-                          "description": "A description for the Spirit",
-                      },
-                      "examples": { "$ref": "#/$defs/examples }
-                  }
+              "trigger": {
+                "$ref": "#/$defs/Trigger"
+              },
+              "endpoint": {
+                "$ref": "#/$defs/Endpoint"
+              },
+              "description": {
+                "type": "string"
+              },
+              "examples": {
+                "$ref": "#/$defs/Examples"
+              }
+            }
+          },
+          "Alias": {
+            "type": "object",
+            "title": "Alias",
+            "examples": [{
+              "type": "alias",
+              "alias": "hw",
+              "expansion": "Hello World"
+            }],
+            "required": [
+              "type",
+              "alias",
+              "expansion"
+            ],
+            "properties": {
+              "type": {
+                "constant": "alias"
               },
               "alias": {
-                  "type": "object",
-                  "title": "Alias",
-                  "examples": [
-                      {
-                          "type": "alias",
-                          "alias": "hw",
-                          "expansion": "Hello World"
-                      }
-                  ],
-                  "required": [
-                      "type",
-                      "alias",
-                      "expansion"
-                  ],
-                  "properties": {
-                      "type": {
-                          "constant": "alias"
-                      },
-                      "alias": {
-                          "type": "string",
-                          "description": "The abbreviated alias to expand",
-                      },
-                      "expansion": {
-                          "type": "string",
-                          "description": "The expansion of the alias invoked",
-                      }
-                      "examples": { "$ref": "#/$defs/examples }
-                  }
+                "type": "string",
+                "description": "The abbreviated alias to expand"
+              },
+              "expansion": {
+                "type": "string",
+                "description": "The expansion of the alias invoked"
+              },
+              "examples": {
+                "$ref": "#/$defs/Examples"
               }
+            }
           }
+        }
       }
 
   Interface 
