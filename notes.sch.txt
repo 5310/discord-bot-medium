@@ -55,12 +55,14 @@
         This circumvents any collisions with other bots
       ? Ofc, if none match, tells you to get `help`
       
-    !` *
-      For every new message it can read in a channel it's allowed to post in
+    ?` *
+      ! For every new message it can read in a channel it's allowed to post in
         If the content matches any channeling's regex in order of priority 
           Send's it to is microservice
           ? Add a temporary reaction to signify it's processing it
           Delegates the response as a reply
+      ? Also do Reactions
+      ? Also do aliases!
 
   Schemata
     See `./spirits.schema.json`
