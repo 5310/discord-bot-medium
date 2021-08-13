@@ -64,29 +64,11 @@
 
   Interface 
     Medium→Specter
-      ` {
-      `   content: String,
-        Always present
-      `   id: ?Number,
-        Snowflake converted to Number
-      `   authorId: ?Number,
-        Converted from the `author` field into flat String
-      `   channelId: ?Number, 
-        Snowflake converted to Number
-      `   guildId: ?Number,
-        Snowflake converted to Number
-      `   messageType: ?String,
-        MessageType converted to String
-      `?   uri: ?String,
-      `?   hasThread: ?Boolean,
-      `?   attachments: ?Object,
-        Collection and MessageAttachment converted into objects
-        Snowflake converted to Number
-      ` }
       While separation of concerns is paramount, a balance had to be struck in terms of convenience and payload size
-        So Medium will send the Specter an object that only partially looks like a `Message`
-        It will start off with just the `content` property, but we may add more and more as needed by desired functionality
-        And some of those properties may be simplified to something that is serializable
+        For a while I wanted to manually recreate a partial Message object
+        But then I noticed that the serialized Message object is small enough
+          No attachments get seen though, only their snowflake. But I can live with that!
+      ` Message
     Specter→Medium
       Initially I thought the Specter's response should be as minimal as possible, something directly feedable into the `Channel.send()` method
         ` String|MessageOptions
@@ -106,3 +88,4 @@
       But then I learned that the only way to `reply` to a message without mentions is to use MessageOptions, so now I'm considering only allowing objects
         ` { content: '...', allowedMentions: { repliedUser: false, parse: [], users: [], roles: [] }, }
         @ https://discord.js.org/#/docs/main/stable/typedef/MessageMentionOptions
+      ` ReplyMessageOptions
