@@ -70,9 +70,9 @@
           No attachments get seen though, only their snowflake. But I can live with that!
       ` Message
     Specter→Medium
-      Initially I thought the Specter's response should be as minimal as possible, something directly feedable into the `Channel.send()` method
+      ~ Initially I thought the Specter's response should be as minimal as possible, something directly feedable into the `Channel.send()` method
         ` String|MessageOptions
-      ? But then I decided some of the times the Specter would like to say nothing, and maybe, we would want to send back Reactions in the future as well instead of replies?
+      ~ But then I decided some of the times the Specter would like to say nothing, and maybe, we would want to send back Reactions in the future as well instead of replies?
         The best way to go about this would be to make an explicit response type field in a wrapped object
         ` {
         `   type: "message",
