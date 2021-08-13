@@ -32,7 +32,7 @@
         If given an index that does not exist for source, does nothing
         If given an index that does not exist for destination, snaps to the next sensible value
       Admin-only
-      
+
     ?` @medium alias <abbreviation> <expansion>
       Local ones, ofc, can't trigger other bots
       
@@ -62,8 +62,159 @@
           ? Add a temporary reaction to signify it's processing it
           Delegates the response as a reply
 
-    ? What about aliases?
-      Local ones, ofc, can't trigger other bots
+  Store
+    ```
+      {
+          "$schema": "http://json-schema.org/draft-07/schema",
+          "$id": "http://discord-bot-medium.scio.space/schema.json",
+          "type": "array",
+          "title": "List of Spirits to channel for this Guild",
+          "default": [],
+          "additionalItems": true,
+          "items": {
+              "anyOf": [
+                  {
+                      "type": "object",
+                      "title": "A Reply Spirit",
+                      "description": "A Spirit that replies to invocations",
+                      "examples": [
+                        {
+                          "type": "reply",
+                          "regex": "/^(hullo|hello|hi|hey).*/i",
+                          "endpoint": "http://localhost:3000/api/helloworld",
+                          "description": "greets you"
+                        },
+                      ],
+                      "required": [
+                          "type",
+                          "regex",
+                          "endpoint"
+                      ],
+                      "properties": {
+                          "type": {
+                              "constant": "reply"
+                          },
+                          "regex": {
+                              "type": "string",
+                              "format": "regex",
+                              "title": "The Regex to invoce on"
+                          },
+                          "endpoint": {
+                              "type": "string",
+                              "format": "uri",
+                              "title": "The endpoint to invoke"
+                          },
+                          "description": {
+                              "type": "string",
+                              "title": "A description for the Spirit",
+                          }
+                      }
+                  },
+                  {
+                      "type": "object",
+                      "title": "A React Spirit",
+                      "description": "An explanation about the purpose of this instance.",
+                      "examples": [
+                          {
+                              "type": "reaction",
+                              "regex": "/(^yo|so+ metal|very metal)/i",
+                              "endpoint": "http://localhost:3000/api/🤘",
+                              "description": "gives you the devil horns"
+                          }
+                      ],
+                      "required": [
+                          "type",
+                          "regex",
+                          "endpoint"
+                      ],
+                      "properties": {
+                          "type": {
+                              "constant": "react"
+                          },
+                          "regex": {
+                              "type": "string",
+                              "title": "The Regex to invoke on",
+                          },
+                          "endpoint": {
+                              "type": "string",
+                              "title": "The endpoint to invoke",
+                              "format": "uri"
+                          },
+                          "description": {
+                              "type": "string",
+                              "title": "A description for the Spirit",
+                          }
+                          "example": {
+                              "type": "array",
+                              "title": "A list of example invocations of this Spirit",
+                              "default": [],
+                              "examples": [
+                                  [
+                                      [
+                                          "This is so metal!",
+                                          "Reacts to the message with 🤘"
+                                      ]
+                                  ]
+                              ],
+                              "additionalItems": true,
+                              "items": {
+                                  "anyOf": [
+                                      {
+                                          "type": "array",
+                                          "examples": [
+                                              [
+                                                  "This is so metal!",
+                                                  "Reacts to the message with 🤘"
+                                              ]
+                                          ],
+                                          "items":  "items": [
+                                              {
+                                                  "type": "string",
+                                                  "title": "The example invocation",
+                                              },
+                                              {
+                                                  "type": "string",
+                                                  "title": "The resulting response",
+                                              }
+                                          ]
+                                      }
+                                  ]
+                              }
+                          }
+                      }
+                  },
+                  {
+                      "type": "object",
+                      "title": "An Alias",
+                      "examples": [
+                          {
+                              "type": "alias",
+                              "alias": "hm",
+                              "expansion": "hello Martha"
+                          }
+                      ],
+                      "required": [
+                          "type",
+                          "alias",
+                          "expansion"
+                      ],
+                      "properties": {
+                          "type": {
+                              "constant": "alias"
+                          },
+                          "alias": {
+                              "type": "string",
+                              "title": "The abbreviated alias to expand",
+                          },
+                          "expansion": {
+                              "type": "string",
+                              "title": "The expansion of the alias invoked",
+                          }
+                      }
+                  }
+              ]
+          }
+      }
 
   Interface 
     Medium→Specter
