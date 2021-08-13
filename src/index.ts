@@ -20,14 +20,14 @@ client.on('messageCreate', async (message) => {
 
   const { guildId } = message
 
-  const specters =
+  const spirits =
     (await jsonfile.readFile(`db/${guildId}.json`, {
       throws: false,
     })) ?? []
 
   try {
-    for (const specter of specters) {
-      const [pattern, flags] = specter.regex.slice(1).split('/')
+    for (const spirit of spirits) {
+      const [pattern, flags] = spirit.regex.slice(1).split('/')
       const regex = new RegExp(pattern, flags)
 
       const content = message.content.startsWith(`<@!${client.user?.id}>`)
@@ -39,23 +39,23 @@ client.on('messageCreate', async (message) => {
         try {
           // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
           const { body: reply }: { body: object } = await got.post(
-            specter.endpoint,
+            spirit.endpoint,
             {
               // The Message class serializes rather neatly, but we need to override that content
               json: { ...(message.toJSON() as object), content },
               responseType: 'json',
             },
           )
-          // Decided against replying if the Specter is slient. If it's silent, it's silent!
+          // Decided against replying if the spirit is slient. If it's silent, it's silent!
           message.reply({
             ...reply,
             allowedMentions: { repliedUser: false, parse: [] },
           })
           break
         } catch (e) {
-          console.error(`The Specter failed with ${e}`)
+          console.error(`The spirit failed with ${e}`)
           message.reply({
-            content: 'The Specter could not respond...',
+            content: 'The spirit could not respond...',
             allowedMentions: { repliedUser: false, parse: [] },
           })
           continue
