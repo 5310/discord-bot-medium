@@ -11,50 +11,98 @@
   
 * Design
 
-  ` @medium help
-  
-  ` @medium list
-    Lists all added channelings with their priority indices
+  Configuration
+
+    ` @medium help
     
-  ` @medium add <name> <regex> <microservice-url>
-    Adds a new channeling at the highest priority index
-    Admin-only
-    
-  ` @medium remove <index>
-    Admin-only
-    
-  ` @medium move <src-index> <dest-index>
-    Removes the source channeling and places it just before the destination channeling
-      Adjust indices afterwards, ofc
-      If given an index that does not exist for source, does nothing
-      If given an index that does not exist for destination, snaps to the next sensible value
-    Admin-only
-    
-  ` @medium export
-    Dumps the Guild's config to a JSON attachment
-    Admin-only
-    
-  ` @medium import <attachment>
-    Tries to replace the server's config with the given JSON attachment
-    Admin-only
-    
-  ` @medium sustain
-    Keeps a Thread alive forever!
-    
-  ` @medium repose
-    Lets a Thread die-off naturally
-    
-  ` @medium *
-    Any other leading command is checked against channelings like regular posts
-      This circumvents any collisions with other bots
-      Ofc, if none match, tells you to get `help`
-    
-  ` *
-    For every new message it can read in a channel it's allowed to post in
-      If the content matches any channeling's regex in order of priority 
-        Send's it to is microservice
-        ? Add a temporary reaction to signify it's processing it
-        Delegates the response as a reply
-  ? What about aliases?
-    Local ones, ofc, can't trigger other bots
-  ? Formalize Medium–Specter interface
+    ` @medium list
+      Lists all added channelings with their priority indices
+      
+    ` @medium add <name> <regex> <microservice-url>
+      Adds a new channeling at the highest priority index
+      Admin-only
+      ? A concern is that regex patterns can contain spaces
+      
+    ` @medium remove <index>
+      Admin-only
+      
+    ` @medium move <src-index> <dest-index>
+      Removes the source channeling and places it just before the destination channeling
+        Adjust indices afterwards, ofc
+        If given an index that does not exist for source, does nothing
+        If given an index that does not exist for destination, snaps to the next sensible value
+      Admin-only
+      
+    ` @medium export
+      Dumps the Guild's config to a JSON attachment
+      Admin-only
+      
+    ` @medium import <attachment>
+      Tries to replace the server's config with the given JSON attachment
+      Admin-only
+      
+    ` @medium sustain
+      Keeps a Thread alive forever!
+      
+    ` @medium repose
+      Lets a Thread die-off naturally
+      
+    ` @medium *
+      Any other leading command is checked against channelings like regular posts
+        This circumvents any collisions with other bots
+        Ofc, if none match, tells you to get `help`
+      
+    ` *
+      For every new message it can read in a channel it's allowed to post in
+        If the content matches any channeling's regex in order of priority 
+          Send's it to is microservice
+          ? Add a temporary reaction to signify it's processing it
+          Delegates the response as a reply
+
+    ? What about aliases?
+      Local ones, ofc, can't trigger other bots
+
+  Interface 
+    Medium→Specter
+      ` {
+      `   content: String,
+        Always present
+      `   id: ?Number,
+        Snowflake converted to Number
+      `   authorId: ?Number,
+        Converted from the `author` field into flat String
+      `   channelId: ?Number, 
+        Snowflake converted to Number
+      `   guildId: ?Number,
+        Snowflake converted to Number
+      `   messageType: ?String,
+        MessageType converted to String
+      `?   uri: ?String,
+      `?   hasThread: ?Boolean,
+      `?   attachments: ?Object,
+        Collection and MessageAttachment converted into objects
+        Snowflake converted to Number
+      ` }
+      While separation of concerns is paramount, a balance had to be struck in terms of convenience and payload size
+        So Medium will send the Specter an object that only partially looks like a `Message`
+        It will start off with just the `content` property, but we may add more and more as needed by desired functionality
+        And some of those properties may be simplified to something that is serializable
+    Specter→Medium
+      Initially I thought the Specter's response should be as minimal as possible, something directly feedable into the `Channel.send()` method
+        ` String|MessageOptions
+      ? But then I decided some of the times the Specter would like to say nothing, and maybe, we would want to send back Reactions in the future as well instead of replies?
+        The best way to go about this would be to make an explicit response type field in a wrapped object
+        ` {
+        `   type: "message",
+        `   payload: string|MessageOptions,
+        ` } | 
+        ` {
+        `   type: "reaction",
+        `   payload: string,
+        ` } |
+        ` { 
+        `   type: "silence",
+        ` }
+      But then I learned that the only way to `reply` to a message without mentions is to use MessageOptions, so now I'm considering only allowing objects
+        ` { content: '...', allowedMentions: { repliedUser: false, parse: [], users: [], roles: [] }, }
+        @ https://discord.js.org/#/docs/main/stable/typedef/MessageMentionOptions
