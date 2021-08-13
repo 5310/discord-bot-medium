@@ -37,10 +37,7 @@ client.on('messageCreate', async (message) => {
           const { body: reply }: { body: object } = await got.post(
             specter.endpoint,
             {
-              json: {
-                prompt,
-                regex: specter.regex,
-              },
+              json: message,
               responseType: 'json',
             },
           )
