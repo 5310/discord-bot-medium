@@ -30,14 +30,19 @@ client.on('messageCreate', async (message) => {
       const [pattern, flags] = specter.regex.slice(1).split('/')
       const regex = new RegExp(pattern, flags)
 
-      if (prompt.match(regex)) {
+      const content = message.content.startsWith(`<@!${client.user?.id}>`)
+        ? message.content.slice((client.user?.id.length ?? 0) + 4).trim()
+        : message.content
+
+      if (content.match(regex)) {
         message.channel.sendTyping()
         try {
-          // Note: For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
+          // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
           const { body: reply }: { body: object } = await got.post(
             specter.endpoint,
             {
-              json: message,
+              // The Message class serializes rather neatly, but we need to override that content
+              json: { ...(message.toJSON() as object), content },
               responseType: 'json',
             },
           )
