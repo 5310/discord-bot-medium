@@ -18,7 +18,7 @@ client.once('ready', () => {
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return
 
-  const { guildId, content: prompt } = message
+  const { guildId } = message
 
   const specters =
     (await jsonfile.readFile(`db/${guildId}.json`, {
@@ -46,7 +46,7 @@ client.on('messageCreate', async (message) => {
               responseType: 'json',
             },
           )
-          // Note: Decided against replying if the Specter. If it's silent, it's silent!
+          // Decided against replying if the Specter is slient. If it's silent, it's silent!
           message.reply({
             ...reply,
             allowedMentions: { repliedUser: false, parse: [] },
