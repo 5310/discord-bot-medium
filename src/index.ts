@@ -1,4 +1,5 @@
-import { Client, HTTPError, Intents } from 'discord.js'
+import { MessageOptions } from 'child_process'
+import { Client, HTTPError, Intents, ReplyMessageOptions } from 'discord.js'
 import got from 'got'
 import jsonfile from 'jsonfile'
 
@@ -32,17 +33,29 @@ client.on('messageCreate', async (message) => {
       if (prompt.match(regex)) {
         message.channel.sendTyping()
         try {
-          const { body: reply } = await got.post(specter.endpoint, {
-            json: {
-              prompt,
-              regex: specter.regex,
+          // Note: For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
+          const { body: reply }: { body: object } = await got.post(
+            specter.endpoint,
+            {
+              json: {
+                prompt,
+                regex: specter.regex,
+              },
+              responseType: 'json',
             },
+          )
+          // Note: Decided against replying if the Specter. If it's silent, it's silent!
+          message.reply({
+            ...reply,
+            allowedMentions: { repliedUser: false, parse: [] },
           })
-          message.channel.send(reply ?? 'The Specter is silent...')
           break
         } catch (e) {
           console.error(`The Specter failed with ${e}`)
-          message.channel.send('The Specter could not respond...')
+          message.reply({
+            content: 'The Specter could not respond...',
+            allowedMentions: { repliedUser: false, parse: [] },
+          })
           continue
         }
       }
