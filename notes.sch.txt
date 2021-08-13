@@ -11,48 +11,51 @@
   
 * Design
 
-  Configuration
+  Invocation
 
-    ` @medium help
+    ?` @medium help
     
-    ` @medium list
+    ?` @medium list
       Lists all added channelings with their priority indices
       
-    ` @medium add <name> <regex> <microservice-url>
+    ?` @medium add <name> <regex> <microservice-url>
       Adds a new channeling at the highest priority index
       Admin-only
       ? A concern is that regex patterns can contain spaces
       
-    ` @medium remove <index>
+    ?` @medium remove <index>
       Admin-only
       
-    ` @medium move <src-index> <dest-index>
+    ?` @medium move <src-index> <dest-index>
       Removes the source channeling and places it just before the destination channeling
         Adjust indices afterwards, ofc
         If given an index that does not exist for source, does nothing
         If given an index that does not exist for destination, snaps to the next sensible value
       Admin-only
       
-    ` @medium export
+    ?` @medium alias <abbreviation> <expansion>
+      Local ones, ofc, can't trigger other bots
+      
+    ?` @medium export
       Dumps the Guild's config to a JSON attachment
       Admin-only
       
-    ` @medium import <attachment>
+    ?` @medium import <attachment>
       Tries to replace the server's config with the given JSON attachment
       Admin-only
       
-    ` @medium sustain
+    ?` @medium sustain
       Keeps a Thread alive forever!
       
-    ` @medium repose
+    ?` @medium repose
       Lets a Thread die-off naturally
       
-    ` @medium *
-      Any other leading command is checked against channelings like regular posts
+    ?` @medium *
+      ! Any other leading command is checked against channelings like regular posts
         This circumvents any collisions with other bots
-        Ofc, if none match, tells you to get `help`
+      ? Ofc, if none match, tells you to get `help`
       
-    ` *
+    !` *
       For every new message it can read in a channel it's allowed to post in
         If the content matches any channeling's regex in order of priority 
           Send's it to is microservice
