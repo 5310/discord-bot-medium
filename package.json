@@ -1,7 +1,7 @@
 {
   "name": "discord-bot-medium",
   "version": "0.0.0",
-  "description": "An versatile bot that responds to your questions through configurable microservices",
+  "description": "A versatile bot that responds to your messages through configurable microservices",
   "type": "module",
   "main": "build/index.js",
   "scripts": {
