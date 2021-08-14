@@ -1,6 +1,7 @@
 # Project
 build/
 db/
+store/
 scratch/
 
 
