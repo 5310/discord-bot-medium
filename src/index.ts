@@ -26,8 +26,9 @@ client.on('messageCreate', async (message) => {
     })) ?? []
 
   try {
-    let content = message.content.startsWith(`<@!${client.user?.id}>`)
-      ? message.content.slice((client.user?.id.length ?? 0) + 4).trim()
+    const selfMention = `<@!${client.user?.id}>`
+    let content = message.content.startsWith(selfMention)
+      ? message.content.replace(selfMention, '').trim()
       : message.content
 
     for (const spirit of spirits) {
@@ -37,8 +38,7 @@ client.on('messageCreate', async (message) => {
         //////////////////
         if (spirit.type === 'alias') {
           if (content.startsWith(spirit.alias)) {
-            content =
-              spirit.expansion + content.slice(spirit.alias.length).trim()
+            content = content.replace(spirit.alias, spirit.expansion).trim()
             // By design, aliases can only expand to lower-priority Spirits, simply by `continue`ing
             continue
           }
