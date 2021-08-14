@@ -1,13 +1,15 @@
-* Typescript
-  @ https://khalilstemmler.com/blogs/typescript/node-starter-project/
-  @ https://dev.to/eiymba/compiling-typescript-to-esnext-for-back-end-node-js-apps-190l
-  
-* Discord.js
-  @ https://discord.js.org/
-    https://discord.js.org/#/docs/main/master/typedef/BaseMessageOptions
-  @ https://discordjs.guide/
-    @ https://discordjs.guide/miscellaneous/parsing-mention-arguments.html#using-regular-expressions
-    @ https://discordjs.guide/popular-topics/embeds.html#using-an-embed-object
+* Docs
+
+  * Typescript
+    @ https://khalilstemmler.com/blogs/typescript/node-starter-project/
+    @ https://dev.to/eiymba/compiling-typescript-to-esnext-for-back-end-node-js-apps-190l
+    
+  * Discord.js
+    @ https://discord.js.org/
+      https://discord.js.org/#/docs/main/master/typedef/BaseMessageOptions
+    @ https://discordjs.guide/
+      @ https://discordjs.guide/miscellaneous/parsing-mention-arguments.html#using-regular-expressions
+      @ https://discordjs.guide/popular-topics/embeds.html#using-an-embed-object
   
 * Design
 
@@ -64,7 +66,7 @@
       ? Also do Reactions
       ? Also do aliases!
 
-  Schemata
+  Store
     See `./spirits.schema.json`
 
   Interface 
