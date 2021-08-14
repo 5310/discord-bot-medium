@@ -18,11 +18,9 @@ client.once('ready', () => {
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return
 
-  const { guildId } = message
-
   const spirits =
     (
-      await jsonfile.readFile(`store/${guildId}.json`, {
+      await jsonfile.readFile(`store/${message.guildId}.json`, {
         throws: false,
       })
     )?.spirits ?? []
