@@ -1,5 +1,12 @@
 import { MessageOptions } from 'child_process'
-import { Client, HTTPError, Intents, ReplyMessageOptions } from 'discord.js'
+import {
+  Client,
+  GuildChannel,
+  HTTPError,
+  Intents,
+  Permissions,
+  ReplyMessageOptions,
+} from 'discord.js'
 import got from 'got'
 import jsonfile from 'jsonfile'
 
@@ -17,6 +24,12 @@ client.once('ready', () => {
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return
+
+  const botPermissions = message.guild?.me?.permissionsIn(
+    message.channel as GuildChannel,
+  )
+  const canReply = botPermissions?.has(Permissions.FLAGS.SEND_MESSAGES) ?? true
+  const canReact = botPermissions?.has(Permissions.FLAGS.ADD_REACTIONS) ?? true
 
   const spirits =
     (
@@ -47,7 +60,7 @@ client.on('messageCreate', async (message) => {
         //////////////////
         /* React Spirit */
         //////////////////
-        if (spirit.type === 'react') {
+        if (spirit.type === 'react' && canReply) {
           const [trigger, flags] = spirit.trigger.slice(1).split('/')
           const regex = new RegExp(trigger, flags)
 
@@ -66,7 +79,7 @@ client.on('messageCreate', async (message) => {
         //////////////////
         /* Reply Spirit */
         //////////////////
-        if (spirit.type === 'reply') {
+        if (spirit.type === 'reply' && canReact) {
           const [trigger, flags] = spirit.trigger.slice(1).split('/')
           const regex = new RegExp(trigger, flags)
 
