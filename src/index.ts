@@ -26,40 +26,75 @@ client.on('messageCreate', async (message) => {
     })) ?? []
 
   try {
+    let content = message.content.startsWith(`<@!${client.user?.id}>`)
+      ? message.content.slice((client.user?.id.length ?? 0) + 4).trim()
+      : message.content
+
     for (const spirit of spirits) {
-      const [pattern, flags] = spirit.trigger.slice(1).split('/')
-      const trigger = new RegExp(pattern, flags)
+      try {
+        //////////////////
+        /* Alias Spirit */
+        //////////////////
+        if (spirit.type === 'alias') {
+          if (content.startsWith(spirit.alias)) {
+            content =
+              spirit.expansion + content.slice(spirit.alias.length).trim()
+            // By design, aliases can only expand to lower-priority Spirits, simply by `continue`ing
+            continue
+          }
+        }
 
-      const content = message.content.startsWith(`<@!${client.user?.id}>`)
-        ? message.content.slice((client.user?.id.length ?? 0) + 4).trim()
-        : message.content
+        //////////////////
+        /* React Spirit */
+        //////////////////
+        if (spirit.type === 'react') {
+          const [trigger, flags] = spirit.trigger.slice(1).split('/')
+          const regex = new RegExp(trigger, flags)
 
-      if (content.match(trigger)) {
-        message.channel.sendTyping()
-        try {
-          // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
-          const { body: reply }: { body: object } = await got.post(
-            spirit.endpoint,
-            {
+          if (content.match(regex)) {
+            const { body: result } = await got.post(spirit.endpoint, {
               // The Message class serializes rather neatly, but we need to override that content
               json: { ...(message.toJSON() as object), content },
-              responseType: 'json',
-            },
-          )
-          // Decided against replying if the spirit is slient. If it's silent, it's silent!
-          message.reply({
-            ...reply,
-            allowedMentions: { repliedUser: false, parse: [] },
-          })
-          break
-        } catch (e) {
-          console.error(`The spirit failed with ${e}`)
-          message.reply({
-            content: 'The spirit could not respond...',
-            allowedMentions: { repliedUser: false, parse: [] },
-          })
-          continue
+              responseType: 'text',
+            })
+            const reactions = [...result.trim()]
+            reactions.forEach((emoji) => message.react(emoji))
+            break
+          }
         }
+
+        //////////////////
+        /* Reply Spirit */
+        //////////////////
+        if (spirit.type === 'reply') {
+          const [trigger, flags] = spirit.trigger.slice(1).split('/')
+          const regex = new RegExp(trigger, flags)
+
+          if (content.match(regex)) {
+            message.channel.sendTyping()
+            // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
+            const { body: reply }: { body: object } = await got.post(
+              spirit.endpoint,
+              {
+                // The Message class serializes rather neatly, but we need to override that content
+                json: { ...(message.toJSON() as object), content },
+                responseType: 'json',
+              },
+            )
+            // Decided against replying if the spirit is slient. If it's silent, it's silent!
+            message.reply({
+              ...reply,
+              allowedMentions: { repliedUser: false, parse: [] },
+            })
+            break
+          }
+        }
+      } catch (e) {
+        console.error(`A spirit failed with ${e}`)
+        message.reply({
+          content: 'A spirit could not respond...',
+          allowedMentions: { repliedUser: false, parse: [] },
+        })
       }
     }
   } catch (e) {
