@@ -91,10 +91,11 @@ client.on('messageCreate', async (message) => {
         }
       } catch (e) {
         console.error(`A spirit failed with ${e}`)
-        message.reply({
-          content: 'A spirit could not respond...',
-          allowedMentions: { repliedUser: false, parse: [] },
-        })
+        // Debug:
+        // message.reply({
+        //   content: 'Some Spirits could not respond...',
+        //   allowedMentions: { repliedUser: false, parse: [] },
+        // })
       }
     }
   } catch (e) {
