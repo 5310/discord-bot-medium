@@ -21,9 +21,11 @@ client.on('messageCreate', async (message) => {
   const { guildId } = message
 
   const spirits =
-    (await jsonfile.readFile(`db/${guildId}.json`, {
-      throws: false,
-    })) ?? []
+    (
+      await jsonfile.readFile(`store/${guildId}.json`, {
+        throws: false,
+      })
+    )?.spirits ?? []
 
   try {
     const selfMention = `<@!${client.user?.id}>`

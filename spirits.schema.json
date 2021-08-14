@@ -1,23 +1,22 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "type": "array",
-  "title": "Spirits",
-  "description": "List of Spirits to channel for this Guild",
-  "default": [],
-  "additionalItems": true,
-  "items": {
-    "anyOf": [
-      {
-        "$ref": "#/$defs/Reply"
-      },
-      {
-        "$ref": "#/$defs/React"
-      },
-      {
-        "$ref": "#/$defs/Alias"
-      }
-    ]
+  "type": "object",
+  "title": "Store",
+  "description": "A Store for per-Guild configuration",
+  "default": {
+    "spirits": []
   },
+  "properties": {
+    "spirits": {
+      "type": "array",
+      "description": "A list of all the Spirits configured for this Guild",
+      "items": {
+        "$ref": "#/$defs/Spirit"
+      }
+    }
+  },
+  "required": ["spirits"],
+  "additionalItems": true,
   "$defs": {
     "Trigger": {
       "type": "string",
@@ -62,7 +61,6 @@
           "description": "Greets you"
         }
       ],
-      "required": ["type", "trigger", "endpoint"],
       "properties": {
         "type": {
           "constant": "reply"
@@ -79,7 +77,8 @@
         "examples": {
           "$ref": "#/$defs/Examples"
         }
-      }
+      },
+      "required": ["type", "trigger", "endpoint"]
     },
     "React": {
       "type": "object",
@@ -92,7 +91,6 @@
           "description": "Gives you the devil horns"
         }
       ],
-      "required": ["type", "trigger", "endpoint"],
       "properties": {
         "type": {
           "constant": "react"
@@ -109,7 +107,8 @@
         "examples": {
           "$ref": "#/$defs/Examples"
         }
-      }
+      },
+      "required": ["type", "trigger", "endpoint"]
     },
     "Alias": {
       "type": "object",
@@ -121,7 +120,6 @@
           "expansion": "Hello World"
         }
       ],
-      "required": ["type", "alias", "expansion"],
       "properties": {
         "type": {
           "constant": "alias"
@@ -137,7 +135,22 @@
         "examples": {
           "$ref": "#/$defs/Examples"
         }
-      }
+      },
+      "required": ["type", "alias", "expansion"]
+    },
+    "Spirit": {
+      "description": "A list of all the Spirits configured for this Guild",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reply"
+        },
+        {
+          "$ref": "#/$defs/React"
+        },
+        {
+          "$ref": "#/$defs/Alias"
+        }
+      ]
     }
   }
 }
