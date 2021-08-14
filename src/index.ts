@@ -103,7 +103,7 @@ client.on('messageCreate', async (message) => {
           }
         }
       } catch (e) {
-        console.error(`A spirit failed with ${e}`)
+        console.error(`A spirit failed with ${e}`, { spirit, content })
         // Debug:
         // message.reply({
         //   content: 'Some Spirits could not respond...',
