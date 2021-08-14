@@ -27,14 +27,14 @@ client.on('messageCreate', async (message) => {
 
   try {
     for (const spirit of spirits) {
-      const [pattern, flags] = spirit.regex.slice(1).split('/')
-      const regex = new RegExp(pattern, flags)
+      const [pattern, flags] = spirit.trigger.slice(1).split('/')
+      const trigger = new RegExp(pattern, flags)
 
       const content = message.content.startsWith(`<@!${client.user?.id}>`)
         ? message.content.slice((client.user?.id.length ?? 0) + 4).trim()
         : message.content
 
-      if (content.match(regex)) {
+      if (content.match(trigger)) {
         message.channel.sendTyping()
         try {
           // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`

@@ -57,7 +57,7 @@
       "examples": [
         {
           "type": "reply",
-          "regex": "/^(hullo|hello|hi|hey).*/i",
+          "trigger": "/^(hullo|hello|hi|hey).*/i",
           "endpoint": "https://example.com/hello",
           "description": "Greets you"
         }
@@ -92,7 +92,7 @@
           "description": "Gives you the devil horns"
         }
       ],
-      "required": ["type", "regex", "endpoint"],
+      "required": ["type", "trigger", "endpoint"],
       "properties": {
         "type": {
           "constant": "react"
