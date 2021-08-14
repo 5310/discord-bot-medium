@@ -86,7 +86,7 @@
       "title": "React Spirit",
       "examples": [
         {
-          "type": "reaction",
+          "type": "react",
           "trigger": "/(^yo|so+ metal|very metal)/i",
           "endpoint": "https://example.com/🤘",
           "description": "Gives you the devil horns"
