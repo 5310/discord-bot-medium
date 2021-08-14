@@ -84,7 +84,7 @@ client.on('messageCreate', async (message) => {
             // Decided against replying if the spirit is slient. If it's silent, it's silent!
             message.reply({
               ...reply,
-              allowedMentions: { repliedUser: false, parse: [] },
+              allowedMentions: { repliedUser: false },
             })
             break
           }
