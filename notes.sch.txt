@@ -2,6 +2,7 @@
 
   * Typescript
     @ https://khalilstemmler.com/blogs/typescript/node-starter-project/
+      @ https://stackoverflow.com/a/66626333
     @ https://dev.to/eiymba/compiling-typescript-to-esnext-for-back-end-node-js-apps-190l
     
   * Discord.js
