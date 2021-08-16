@@ -1,12 +1,4 @@
-import { MessageOptions } from 'child_process'
-import {
-  Client,
-  GuildChannel,
-  HTTPError,
-  Intents,
-  Permissions,
-  ReplyMessageOptions,
-} from 'discord.js'
+import { Client, GuildChannel, Intents, Permissions } from 'discord.js'
 import got from 'got'
 import jsonfile from 'jsonfile'
 
@@ -66,8 +58,10 @@ client.on('messageCreate', async (message) => {
 
           if (content.match(regex)) {
             const { body: result } = await got.post(spirit.endpoint, {
-              // The Message class serializes rather neatly, but we need to override that content
-              json: { ...(message.toJSON() as object), content },
+              json: {
+                ...(message.toJSON() as Record<string, unknown>),
+                content,
+              },
               responseType: 'text',
             })
             const reactions = [...result.trim()]
@@ -86,14 +80,15 @@ client.on('messageCreate', async (message) => {
           if (content.match(regex)) {
             message.channel.sendTyping()
             // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
-            const { body: reply }: { body: object } = await got.post(
-              spirit.endpoint,
-              {
+            const { body: reply }: { body: Record<string, unknown> } =
+              await got.post(spirit.endpoint, {
                 // The Message class serializes rather neatly, but we need to override that content
-                json: { ...(message.toJSON() as object), content },
+                json: {
+                  ...(message.toJSON() as Record<string, unknown>),
+                  content,
+                },
                 responseType: 'json',
-              },
-            )
+              })
             // Decided against replying if the spirit is slient. If it's silent, it's silent!
             message.reply({
               ...reply,

@@ -5,7 +5,7 @@
   "type": "module",
   "main": "build/index.js",
   "scripts": {
-    "lint": "npx tslint -p .",
+    "lint": "npx eslint src --ext .js,.jsx,.ts,.tsx",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -Rf ./build/* && tsc",
     "start": "npm run build && node -r dotenv/config .",
@@ -23,11 +23,12 @@
   "devDependencies": {
     "@types/jsonfile": "^6.0.1",
     "@types/node": "^16.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "eslint": "^7.32.0",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.0",
-    "tslint": "^6.1.3",
-    "typescript": "^4.3.5",
-    "typescript-tslint-plugin": "^1.0.1"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "discord.js": "^13.0.1",
