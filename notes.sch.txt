@@ -64,8 +64,11 @@
           Send's it to is microservice
           ? Add a temporary reaction to signify it's processing it
           Delegates the response as a reply
-      ? Also do Reactions
-      ? Also do aliases!
+      ! Also do Reactions
+      ! Also do aliases!
+      ? Also do templates!
+      ! Decided not to allow multiple endpoints to randomly pick per spirit
+        If needed, we can do this with multiple suffixed query parameters
 
   Store
     See `./spirits.schema.json`
