@@ -55,8 +55,12 @@ client.on('messageCreate', async (message) => {
         if (spirit.type === 'react' && canReply) {
           const [trigger, flags] = spirit.trigger.slice(1).split('/')
           const regex = new RegExp(trigger, flags)
+          const match = content.match(regex)
 
-          if (content.match(regex)) {
+          if (match?.groups?.command)
+            content = content.replace(match.groups.command, '').trim()
+
+          if (match) {
             const { body: result } = await got.post(spirit.endpoint, {
               json: {
                 ...(message.toJSON() as Record<string, unknown>),
@@ -76,8 +80,12 @@ client.on('messageCreate', async (message) => {
         if (spirit.type === 'reply' && canReact) {
           const [trigger, flags] = spirit.trigger.slice(1).split('/')
           const regex = new RegExp(trigger, flags)
+          const match = content.match(regex)
 
-          if (content.match(regex)) {
+          if (match?.groups?.command)
+            content = content.replace(match.groups.command, '').trim()
+
+          if (match) {
             message.channel.sendTyping()
             // For some reason, the `send()` won't accept `MessageOptions`, but would accept `ReplyMessageOptions`
             const { body: reply }: { body: Record<string, unknown> } =
