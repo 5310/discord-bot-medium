@@ -28,6 +28,10 @@
       "format": "iri",
       "description": "The endpoint to invoke"
     },
+    "Direct": {
+      "type": "boolean",
+      "description": "This Spirit can only be invoked through directly mentioning the Medium"
+    },
     "Example": {
       "type": "array",
       "description": "An example invocations",
@@ -74,6 +78,9 @@
         "description": {
           "type": "string"
         },
+        "direct": {
+          "$ref": "#/$defs/Direct"
+        },
         "examples": {
           "$ref": "#/$defs/Examples"
         }
@@ -104,6 +111,9 @@
         "description": {
           "type": "string"
         },
+        "direct": {
+          "$ref": "#/$defs/Direct"
+        },
         "examples": {
           "$ref": "#/$defs/Examples"
         }
@@ -131,6 +141,9 @@
         "expansion": {
           "type": "string",
           "description": "The expansion of the alias invoked"
+        },
+        "direct": {
+          "$ref": "#/$defs/Direct"
         },
         "examples": {
           "$ref": "#/$defs/Examples"

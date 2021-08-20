@@ -32,11 +32,13 @@ client.on('messageCreate', async (message) => {
 
   try {
     const selfMention = `<@!${client.user?.id}>`
-    let content = message.content.startsWith(selfMention)
+    const direct = message.content.startsWith(selfMention)
+    let content = direct
       ? message.content.replace(selfMention, '').trim()
       : message.content
 
     for (const spirit of spirits) {
+      if (spirit.direct && !direct) continue
       try {
         //////////////////
         /* Alias Spirit */
